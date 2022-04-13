@@ -31,13 +31,18 @@ changeToDoggos.addEventListener("click", async () => {
 // current page
 function setPagetoDoggos() {
   chrome.storage.sync.get("isDoggos", ({ isDoggos }) => {
-    console.log('click', isDoggos);
+    const images = [...document.querySelectorAll("img")];
+
     // TODO: Need to select and replace images and text here.
     // Just placeholders for now.
     if (!isDoggos) {
-      document.body.style.backgroundColor = 'purple';
+      // Just reload the page if the extension is clicked again.
+      location.reload();
     } else {
       document.body.style.backgroundColor = 'violet';
+      images.map(i => {
+        i.src = "https://pbs.twimg.com/profile_images/1478141668159148033/IOD8SZvx_400x400.jpg";
+      });
     }
   });
 }
