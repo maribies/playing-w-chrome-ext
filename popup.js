@@ -2,14 +2,15 @@
 let changeToDoggos = document.getElementById("changeToDoggos");
 
 chrome.storage.sync.get("isDoggos", ({ isDoggos }) => {
-  if (!isDoggos) {
-    // FIXME: This should not be hardcoded.
-    changeToDoggos.style = "background-image: url('https://pbs.twimg.com/profile_images/1478141668159148033/IOD8SZvx_400x400.jpg');";
-  } else {
-    // FIXME: Maybe this should be the logo of the (news) site?
-    changeToDoggos.style = "background-color: red;";
-  }
+  setExtensionImage(isDoggos);
 });
+
+function setExtensionImage(isDoggos) {
+  // FIXME: These should not be hardcoded.
+  !isDoggos ? 
+    changeToDoggos.style = "background-image: url('https://pbs.twimg.com/profile_images/1478141668159148033/IOD8SZvx_400x400.jpg');" 
+    : changeToDoggos.style = "background-color: red;";
+};
 
 // When the button is clicked, inject setPagetoDoggos into current page
 changeToDoggos.addEventListener("click", async () => {
@@ -17,7 +18,7 @@ changeToDoggos.addEventListener("click", async () => {
 
   chrome.storage.sync.get("isDoggos", ({ isDoggos }) => {
     chrome.storage.sync.set({isDoggos: !isDoggos}, function() {
-      console.log('isDoggos:', isDoggos);
+      setExtensionImage(isDoggos);
     });
   });
 
