@@ -1,24 +1,43 @@
-// Initialize button with user's preferred color
-let changeColor = document.getElementById("changeColor");
+// Selector for changing the images and text to doggos
+let changeToDoggos = document.getElementById("changeToDoggos");
 
-chrome.storage.sync.get("color", ({ color }) => {
-  changeColor.style.backgroundColor = color;
+chrome.storage.sync.get("isDoggos", ({ isDoggos }) => {
+  if (!isDoggos) {
+    // FIXME: This should not be hardcoded.
+    changeToDoggos.style = "background-image: url('https://pbs.twimg.com/profile_images/1478141668159148033/IOD8SZvx_400x400.jpg');";
+  } else {
+    // FIXME: Maybe this should be the logo of the (news) site?
+    changeToDoggos.style = "background-color: red;";
+  }
 });
 
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
+// When the button is clicked, inject setPagetoDoggos into current page
+changeToDoggos.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  chrome.storage.sync.get("isDoggos", ({ isDoggos }) => {
+    chrome.storage.sync.set({isDoggos: !isDoggos}, function() {
+      console.log('isDoggos:', isDoggos);
+    });
+  });
 
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: setPageBackgroundColor,
+    function: setPagetoDoggos,
   });
 });
 
 // The body of this function will be executed as a content script inside the
 // current page
-function setPageBackgroundColor() {
-  chrome.storage.sync.get("color", ({ color }) => {
-    document.body.style.backgroundColor = color;
+function setPagetoDoggos() {
+  chrome.storage.sync.get("isDoggos", ({ isDoggos }) => {
+    console.log('click', isDoggos);
+    // TODO: Need to select and replace images and text here.
+    // Just placeholders for now.
+    if (!isDoggos) {
+      document.body.style.backgroundColor = 'purple';
+    } else {
+      document.body.style.backgroundColor = 'violet';
+    }
   });
 }
