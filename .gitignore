@@ -1,2 +1,5 @@
 # OS generated file
 .DS_Store
+
+# Storing token here until figure out if ok to be "public"
+.env
