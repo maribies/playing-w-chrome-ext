@@ -32,17 +32,19 @@ changeToDoggos.addEventListener("click", async () => {
 // current page
 function setPagetoDoggos() {
   chrome.storage.sync.get("isDoggos", ({ isDoggos }) => {
-    const images = [...document.querySelectorAll("img")];
+    const images = [...document.querySelectorAll("img"), ...document.querySelectorAll("picture > *[srcset]")];
 
     // TODO: Need to select and replace images and text here.
     // Just placeholders for now.
+    const doggoImg = "https://pbs.twimg.com/profile_images/1478141668159148033/IOD8SZvx_400x400.jpg";
     if (!isDoggos) {
       // Just reload the page if the extension is clicked again.
       location.reload();
     } else {
       document.body.style.backgroundColor = 'violet';
       images.map(i => {
-        i.src = "https://pbs.twimg.com/profile_images/1478141668159148033/IOD8SZvx_400x400.jpg";
+        i.src = doggoImg;
+        i.srcset = doggoImg;
       });
     }
   });
